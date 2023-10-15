@@ -1,8 +1,9 @@
-##CMPE120 Team7 Risc V Simulator
+## CMPE120 Team7 Risc V Simulator
 Description:
 
-###Team Members
+### Team Members
 |Name|
+|----|
 |Natalie Kao|
 |Tanya Reuben|
 |Hana Suzuki|
