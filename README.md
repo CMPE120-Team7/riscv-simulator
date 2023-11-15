@@ -11,3 +11,8 @@ Description:
 |Hana Suzuki|
 |Adelyn Tam|
 |Katrina Weers|
+
+### How to run the program 
+1. Git clone this repository on your local system
+2. Open Main.java on IDE of your choice
+3. Run Main.java
