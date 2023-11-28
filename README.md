@@ -2,7 +2,8 @@
 Description:
 
 [Project Specification](https://drive.google.com/file/d/1D7QacCSGzgV5IkzX993fB3wQ-xQb27gd/view?usp=sharing)
-[Project Design] (https://docs.google.com/document/d/1Rdb_dr_OaWjEdQeKGpfPBKd_aiZtRLdXVYZpZ0MfcZg/edit?usp=sharing)
+
+[Project Design](https://docs.google.com/document/d/1Rdb_dr_OaWjEdQeKGpfPBKd_aiZtRLdXVYZpZ0MfcZg/edit?usp=sharing)
 
 
 ### Team Members
