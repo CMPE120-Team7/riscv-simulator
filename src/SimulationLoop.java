@@ -83,50 +83,50 @@ public class SimulationLoop {
 
 			case InstructionSet.LB: //load byte  
 				int lbAddress = registerFiles.getRegister(rs1) + imm; 
-				byte lbValue = (byte) memory.read(lbAddress); //casting value as a byte 
+				byte lbValue = (byte) memory.readByte(lbAddress); //casting value as a byte 
 				registerFiles.writeToRegister(rd, lbValue);
 				break; 
 			
 			case InstructionSet.LH:  //LH: load halfword 
 				int lhAddress = registerFiles.getRegister(rs1) + imm; 
-				short lhValue = (short) memory.read(lhAddress); //casting value as a short 
+				short lhValue = (short) memory.readShort(lhAddress); //casting value as a short 
 				registerFiles.writeToRegister(rd, lhValue);
 				break; 
 
 			case InstructionSet.LW: //LW: load word  
 				int lwAddress = registerFiles.getRegister(rs1) + imm; 
-				int lwValue = memory.read(lwAddress); 
+				int lwValue = memory.readWord(lwAddress); 
 				registerFiles.writeToRegister(rd, lwValue);
 				break; 
 
 			case InstructionSet.LBU:   //LBU: load byte unsigned
 				int lbuAddress = registerFiles.getRegister(rs1) + imm; 
-				short lbuValue = (short) (memory.read(lbuAddress) & 0xFF); 
+				short lbuValue = (short) (memory.readByte(lbuAddress) & 0xFF); 
 				registerFiles.writeToRegister(rd, lbuValue); 
 				break; 
 
 			case InstructionSet.LHU:  //LHU: load halfword unsigned
 				int lhuAddress = registerFiles.getRegister(rs1) + imm; 
-				int lhuValue = memory.read(lhuAddress) & 0xFFFF; 
+				int lhuValue = memory.readHalfword(lhuAddress) & 0xFFFF; 
 				registerFiles.writeToRegister(rd, lhuValue);
 				break; 
 
 			case InstructionSet.SB:  //store byte
 				int sbAddress = registerFiles.getRegister(rs1) + imm; 
 				byte sbValue = (byte) (registerFiles.getRegister(rs2) & 0xFF); 
-				//memory.write(sbAddress, sbValue); 
+				memory.writeByte(sbAddress, sbValue); 
 				break; 
 
 			case InstructionSet.SH:  //store halfword
 				int shAddress = registerFiles.getRegister(rs1) + imm; 
 				short shValue = (short) (registerFiles.getRegister(rs2) & 0xFFFF); 
-				//memory.write(shAddress, shValue); 
+				memory.writeHalfword(shAddress, shValue);
 				break; 
 
 			case InstructionSet.SW:  //store word 
 				int swAddress = registerFiles.getRegister(rs1) + imm; 
 				int swValue = registerFiles.getRegister(rs2); 
-				//memory.write(swAddress, swValue); 
+				memory.writeWord(swAddress, swValue); 
 				break; 
 				
 
@@ -135,11 +135,6 @@ public class SimulationLoop {
 					registerFiles.writeToRegister(rd, result);
 					break;
 					
-			
-		
-			
-
-
 
 			default:
 				System.out.println("invalid instruction: " + instruction);
