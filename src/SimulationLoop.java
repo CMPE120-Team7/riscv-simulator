@@ -131,10 +131,122 @@ public class SimulationLoop {
 				
 
 			case InstructionSet.ADDI: 
-					int result = registerFiles.getRegister(rs1) + imm;
-					registerFiles.writeToRegister(rd, result);
-					break;
+				int result = registerFiles.getRegister(rs1) + imm;
+				registerFiles.writeToRegister(rd, result);
+				break;
 					
+			case InstructionSet.SLTI: // Set Less Than Immediate
+			    int sltiValue = (registerFiles.getRegister(rs1) < imm) ? 1 : 0;
+			    registerFiles.writeToRegister(rd, sltiValue);
+			    break;
+			    
+			case InstructionSet.SLTIU:
+			    int rs1Value = registerFiles.getRegister(rs1);
+			    int comparisonResult = (Integer.compareUnsigned(rs1Value, imm) < 0) ? 1 : 0;
+			    registerFiles.writeToRegister(rd, comparisonResult);
+			    break;
+			
+			case InstructionSet.XORI:
+			    int rs1_XORI = registerFiles.getRegister(rs1);
+			    int imm_XORI = imm;
+			    int result_XORI = rs1_XORI ^ imm_XORI;
+			    registerFiles.writeToRegister(rd, result_XORI);
+			    break;
+					
+			case InstructionSet.ORI:
+			    int rs1_ORI = registerFiles.getRegister(rs1);
+			    int imm_ORI = imm;
+			    int result_ORI = rs1_ORI | imm_ORI;
+			    registerFiles.writeToRegister(rd, result_ORI);
+			    break;
+			
+			case InstructionSet.ANDI:
+			    int rs1_ANDI = registerFiles.getRegister(rs1);
+			    int imm_ANDI = imm;
+			    int result_ANDI = rs1_ANDI & imm_ANDI;
+			    registerFiles.writeToRegister(rd, result_ANDI);
+			    break;
+			    
+			case InstructionSet.SLLI:
+			    int rs1_SLLI = registerFiles.getRegister(rs1);
+			    int shamt_SLLI = imm & 0x1F; // Masking immediate value to fit shamt range (0-31)
+			    int result_SLLI = rs1_SLLI << shamt_SLLI;
+			    registerFiles.writeToRegister(rd, result_SLLI);
+			    break;
+			    
+			case InstructionSet.SRLI:
+			    int rs1_SRLI = registerFiles.getRegister(rs1);
+			    int shamt_SRLI = imm & 0x1F; // Masking immediate value to fit shamt range (0-31)
+			    int result_SRLI = rs1_SRLI >>> shamt_SRLI;
+			    registerFiles.writeToRegister(rd, result_SRLI);
+			    break;
+			    
+			case InstructionSet.SRAI:
+			    int rs1_SRAI = registerFiles.getRegister(rs1);
+			    int shamt_SRAI = imm & 0x1F; // Masking immediate value to fit shamt range (0-31)
+			    int result_SRAI = rs1_SRAI >> shamt_SRAI;
+			    registerFiles.writeToRegister(rd, result_SRAI);
+			    break;
+			    
+		    case InstructionSet.ADD:
+		        int resultADD = registerFiles.getRegister(rs1) + registerFiles.getRegister(rs2);
+		        registerFiles.writeToRegister(rd, resultADD);
+		        break;
+		        
+		    case InstructionSet.SUB:
+		        int resultSUB = registerFiles.getRegister(rs1) - registerFiles.getRegister(rs2);
+		        registerFiles.writeToRegister(rd, resultSUB);
+		        break;
+		        
+		    case InstructionSet.SLL:
+		        int shamt = registerFiles.getRegister(rs2) & 0x1F; // Extract lower 5 bits
+		        int resultSLL = registerFiles.getRegister(rs1) << shamt;
+		        registerFiles.writeToRegister(rd, resultSLL);
+		        break;
+		        
+		    case InstructionSet.SLT:
+		        int resultSLT = (registerFiles.getRegister(rs1) < registerFiles.getRegister(rs2)) ? 1 : 0;
+		        registerFiles.writeToRegister(rd, resultSLT);
+		        break;
+		        
+		    case InstructionSet.SLTU:
+		        int resultSLTU = (Integer.compareUnsigned(registerFiles.getRegister(rs1), registerFiles.getRegister(rs2)) < 0) ? 1 : 0;
+		        registerFiles.writeToRegister(rd, resultSLTU);
+		        break;
+		        
+		    case InstructionSet.XOR:
+		        int resultXOR = registerFiles.getRegister(rs1) ^ registerFiles.getRegister(rs2);
+		        registerFiles.writeToRegister(rd, resultXOR);
+		        break;
+		        
+		    case InstructionSet.SRL:
+		        int shiftAmount = (registerFiles.getRegister(rs2) & 0x1F); // Extract the shift amount
+		        int sourceValue = registerFiles.getRegister(rs1); // Value to be shifted
+		        int shiftedResult = sourceValue >>> shiftAmount; // Perform logical right shift
+		        registerFiles.writeToRegister(rd, shiftedResult); // Store the result in the destination register
+		        break;
+		        
+	        case InstructionSet.SRA:
+	            int sraShift = (registerFiles.getRegister(rs2) & 0x1F); // Extract the shift amount
+	            int sraSource = registerFiles.getRegister(rs1); // Value to be shifted
+	            int sraResult = sraSource >> sraShift; // Perform arithmetic right shift
+	            registerFiles.writeToRegister(rd, sraResult); // Store the result in the destination register
+	            break;
+	            
+		    case InstructionSet.OR:
+		        int orValue1 = registerFiles.getRegister(rs1); // First value for bitwise OR
+		        int orValue2 = registerFiles.getRegister(rs2); // Second value for bitwise OR
+		        int orResult = orValue1 | orValue2; // Perform bitwise OR operation
+		        registerFiles.writeToRegister(rd, orResult); // Store the result in the destination register
+		        break;
+		        
+		    case InstructionSet.AND:
+		        int andValue1 = registerFiles.getRegister(rs1); // First value for bitwise AND
+		        int andValue2 = registerFiles.getRegister(rs2); // Second value for bitwise AND
+		        int andResult = andValue1 & andValue2; // Perform bitwise AND operation
+		        registerFiles.writeToRegister(rd, andResult); // Store the result in the destination register
+		        break;
+			 
 
 			default:
 				System.out.println("invalid instruction: " + instruction);
