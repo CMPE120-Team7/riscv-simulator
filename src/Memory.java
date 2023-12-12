@@ -85,4 +85,8 @@ public class Memory {
             throw new IllegalArgumentException("Invalid memory address: " + address);
         }
     }
+
+    public int getSize() {
+        return memory.size();
+    }
 }
