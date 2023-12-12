@@ -7,7 +7,7 @@ public class RegisterFiles {
         return registers[index];
     }
 
-    public void writeToRegister(int index, int val) {
+    public void setRegister(int index, int val) {
         registers[index] = val;
     }
     

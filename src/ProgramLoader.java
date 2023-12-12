@@ -1,46 +1,40 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProgramLoader {
-    private Memory memory;
+    public int[] loadInstructionsFromFile(String fileName) {
+        List<Integer> instructionsList = new ArrayList<>();
 
-    public ProgramLoader(Memory memory){
-        this.memory = memory;
-    }
-
-    //load instructions from .dat file into memory
-    public void loadInstructions(String file){
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
-            int address = 0;
-
-            while ((line = br.readLine()) != null) {
-                // Assuming each line contains a single instruction in binary format
-                // You may need to adjust this based on your .dat file format
-                int instruction = Integer.parseInt(line, 2);
-                memory.writeWord(address, instruction);
-                address += 4; // Assuming each instruction is 4 bytes (32 bits)
+            while ((line = reader.readLine()) != null) {
+                int instruction = parseInstruction(line);
+                instructionsList.add(instruction);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return convertToIntArray(instructionsList);
     }
 
-    public void loadData(String file){
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            int address = 0;
-
-            while ((line = br.readLine()) != null) {
-                // Assuming each line contains a single 32-bit word of data in hexadecimal format
-                int data = Integer.parseInt(line, 2);
-                memory.writeWord(address, data);
-                address += 4; // Assuming each data word is 4 bytes (32 bits)
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private int parseInstruction(String line) {
+        try {
+            return Integer.parseInt(line.trim(), 16);
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing instruction: " + line);
+            return 0; // Or handle it accordingly
         }
+    }
+
+    private int[] convertToIntArray(List<Integer> list) {
+        int[] array = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i);
+        }
+        return array;
     }
 }
-

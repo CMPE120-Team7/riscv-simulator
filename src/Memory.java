@@ -1,88 +1,51 @@
-import java.util.HashMap;
+import java.util.Arrays;
 
 public class Memory {
-    private HashMap<Integer, Byte> memory;
+    private int[] memoryArray;
 
-    public Memory() {
-        this.memory = new HashMap<>();
+    public Memory(int size) {
+        memoryArray = new int[size];
+    }
+
+    public int read(int address) {
+        if (address < 0 || address >= memoryArray.length) {
+            System.err.println("Memory access violation: Out of bounds");
+            return 0; // Return default value or handle error
+        }
+        return memoryArray[address];
+    }
+
+    public void write(int address, int value) {
+        if (address < 0 || address >= memoryArray.length) {
+            System.err.println("Memory access violation: Out of bounds");
+            return; // Or handle error
+        }
+        memoryArray[address] = value;
     }
 
     public void loadInstructions(int[] instructions) {
-        for (int i = 0; i < instructions.length; i++) {
-            writeWord(i * 4, instructions[i]);
+        if (instructions.length > memoryArray.length) {
+            System.err.println("Error: Insufficient memory to load instructions");
+            return; // Or handle error
+        }
+        System.arraycopy(instructions, 0, memoryArray, 0, instructions.length);
+    }
+
+    public void printMemoryContents(int startAddress, int endAddress) {
+        if (startAddress < 0 || endAddress >= memoryArray.length || startAddress > endAddress) {
+            System.err.println("Invalid memory range");
+            return; // Or handle error
+        }
+
+        for (int i = startAddress; i <= endAddress; i++) {
+            System.out.println("Memory[" + i + "]: " + memoryArray[i]);
         }
     }
 
-    public byte readByte(int address) {
-        validateAddress(address);
-        return memory.getOrDefault(address, (byte) 0);
-    }
-
-    public int readWord(int address) {
-        validateAddress(address);
-        int word = 0;
-
-        for (int i = 0; i < 4; i++) {
-            word |= (readByte(address + i) & 0xFF) << (i * 8);
-        }
-
-        return word;
-    }
-
-    public short readShort(int address) {
-        validateAddress(address);
-        short shortValue = 0; 
-
-        for(int i = 0; i < 2; i++) {
-            shortValue |= (readByte(address + i) & 0xFF) << (i * 8);
-        }
-
-        return shortValue; 
-    }
-
-    public short readHalfword(int address) {
-        validateAddress(address);
-        short halfword = 0; 
-
-        for(int i = 0; i < 2; i++) {
-            halfword |= (readByte(address + i) & 0xFF) << (i * 8);
-        }
-
-        return halfword; 
-    }
-
-
-    public void writeByte(int address, byte value) {
-        validateAddress(address);
-        memory.put(address, value);
-    }
-
-    public void writeWord(int address, int value) {
-        validateAddress(address);
-
-        for (int i = 0; i < 4; i++) {
-            writeByte(address + i, (byte) (value >> (i * 8)));
-        }
-    }
-
-    public void writeShort(int address, short value) {
-        validateAddress(address);
-
-        for(int i = 0; i < 2; i++) {
-            writeByte(address + i, (byte) (value >> (i * 8)));
-        }
-    }
-
-    public void writeHalfword(int address, short value) {
-        validateAddress(address);
-         for(int i = 0; i < 2; i++) {
-            writeByte(address + i, (byte) (value >> (i * 8)));
-        }
-    }
-
-    private void validateAddress(int address) {
-        if (address < 0) {
-            throw new IllegalArgumentException("Invalid memory address: " + address);
-        }
+    @Override
+    public String toString() {
+        return "Memory{" +
+                "memoryArray=" + Arrays.toString(memoryArray) +
+                '}';
     }
 }
